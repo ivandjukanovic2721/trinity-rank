@@ -37,6 +37,23 @@
             </div>
             <div class="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
                 <p>{!! nl2br(e($post->content)) !!}</p>
+                <hr>
+
+                <span class="block text-base text-center text-indigo-600 font-semibold tracking-wide uppercase">
+                    Add comment
+                </span>
+
+                @include('comments.form.form')
+
+                <span class="block text-base text-center text-indigo-600 font-semibold tracking-wide uppercase mt-12">
+                    Comments
+                </span>
+
+                @include('comments.form.index', [ 
+                    'type' => 'posts', 'parent_id' => 0, 'article_id' => $post->id, 'comments' => $comments, 'index' => 0
+                ])
+
+                {{ $comments->links() }}
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\News;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comments;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -26,8 +27,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)
-            ->has(Post::factory()->count(10), 'posts')
-            ->has(News::factory()->count(10), 'news')
+            ->has(Post::factory()->has( Comments::factory()->posts()->count(7) )->count(10), 'posts')
+            ->has(News::factory()->has( Comments::factory()->news()->count(7) )->count(10), 'news')
             ->create();
     }
 }

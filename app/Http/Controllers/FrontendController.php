@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use App\Models\Post;
+use App\Models\Comments;
 
 class FrontendController extends Controller
 {
@@ -34,13 +35,21 @@ class FrontendController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        return view('post', compact('post'));
+        $comments = $post->comments()->paginate(5);
+
+        $sub_comments = $post->sub_comments()->whereIn('parent_id', $comments->pluck('id')->toArray())->get();
+
+        return view('post', compact('post', 'comments', 'sub_comments'))->with('type', 'posts');
     }
 
     public function newsShow($id)
     {
         $article = News::findOrFail($id);
 
-        return view('article', compact('article'));
+        $comments = $article->comments()->paginate(5);
+
+        $sub_comments = $article->sub_comments()->whereIn('parent_id', $comments->pluck('id')->toArray())->get();
+
+        return view('article', compact('article', 'comments', 'sub_comments'))->with('type', 'news');
     }
 }
